@@ -1,0 +1,23 @@
+{% load static %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style/bootstrap.min.css' %}">
+  <title>{% block title %}Base Template{% endblock title %}</title>
+</head>
+<body>
+
+  <div class="">
+    {% include 'Blog/blogTemplate/navbar.html' %}
+    {% block content %}
+      {% endblock content %}
+  </div>
+
+  
+</body>
+</html>

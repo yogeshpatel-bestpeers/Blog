@@ -1,0 +1,75 @@
+{% extends 'Blog/baseTemplate.html' %}  
+{% load static %}
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'style/style.css' %}">
+
+<div class="container mt-4">
+  <div class="post group">
+    <div class="row">
+      <div class="date">{{ blog.created_at|date:"F j, Y" }}</div>
+      <div class="col-md-6">
+        <img src="{{ blog.featured_image.url }}" alt="" class="featured-image">
+      </div>
+      <div class="col-md-6 d-flex justify-content-center align-items-center">
+        <h1 class="blog-title text-center">{{ blog.title }}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 d-flex justify-content-left align-items-center">
+        <p class="card-text">{{ blog.content }}</p>
+      </div>
+    </div>
+  </div> 
+
+  <hr>
+  <h3>Comments</h3>
+  <div class="comments-section">
+    {% for comment in comments %}
+      <div class="comment mb-3">
+        <strong>{{ comment.user.username }}</strong> on {{ comment.created_at|date:"F j, Y, g:i a" }}:
+        <p>{{ comment.content }}</p>
+
+        {% for reply in comment.replies.all %}
+          <div class="reply ms-4 p-2 bg-light border">
+            <strong>{{ reply.user.username }}</strong> on {{ reply.created_at|date:"F j, Y, g:i a" }}:
+            <p>{{ reply.content }}</p>
+          </div>
+        {% endfor %}
+
+        {% if request.user.is_authenticated %}
+          <a href="javascript:void(0);" onclick="toggleReplyForm('{{ comment.id }}')">Reply</a>
+          <form method="post" id="reply-form-{{ comment.id }}" class="d-none mt-2">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="hidden" name="parent_id" value="{{ comment.id }}">
+            <button type="submit" class="btn btn-sm btn-secondary">Submit Reply</button>
+          </form>
+        {% endif %}
+      </div>
+      <hr>
+    {% empty %}
+      <p>No comments yet. Be the first to comment!</p>
+    {% endfor %}
+  </div>
+
+  {% if request.user.is_authenticated %}
+    <h4>Leave a comment</h4>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  {% else %}
+    <p><a href="{% url 'login' %}">Log in</a> to leave a comment.</p>
+  {% endif %}
+</div>
+
+<script>
+function toggleReplyForm(commentId) {
+  const form = document.getElementById('reply-form-' + commentId);
+  form.classList.toggle('d-none');
+}
+</script>
+{% endblock %}

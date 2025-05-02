@@ -1,0 +1,31 @@
+General container styles
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 25px;
+}
+
+
+.featured-image {
+  height: 300px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.blog-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+
+.card-text {
+  font-size: 1.5rem;
+  color: #555;
+  line-height: 1.6;
+  padding: 15px 95px;
+}
+
+

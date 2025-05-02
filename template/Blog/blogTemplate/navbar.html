@@ -1,0 +1,49 @@
+
+<nav class="navbar navbar-default mb-5 navbar-fixed-top">
+
+<ul class="nav nav-tabs  border border-dark mb-4 px-3 pt-2   fixed-top bg-dark">
+  {% if not request.user.is_authenticated or not request.user.is_staff %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'blogList' %}">MyBlog</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'profile' %}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Contact Us</a>
+    </li>
+  {% endif %}
+
+  {% if  request.user.is_staff %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'profile' %}">Blog Request</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'addCategory' %}">Category</a>
+  </li>
+
+  {% endif %}
+
+  {% if user.username %}
+    <li class="nav-item ms-auto">
+      <span class="nav-link disabled text-white">Welcome, {{ user.username }}!</span>
+    </li>
+    <li class="nav-item">
+      <form action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="nav-link btn btn-link text-danger p-0">Logout</button>
+      </form>
+    </li>
+  {% else %}
+    <li class="nav-item ms-auto">
+      <a class="nav-link text-primary" href="{% url 'login' %}">Login</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-success" href="{% url 'signup' %}">Signup</a>
+    </li>
+  {% endif %}
+</ul>
+
+</nav>
+

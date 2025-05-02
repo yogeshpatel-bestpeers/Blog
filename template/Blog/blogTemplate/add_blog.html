@@ -1,0 +1,31 @@
+{% extends 'Blog/baseTemplate.html'%}
+{% block title%} Create Blog{% endblock title%}
+{% block content %}
+
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 shadow" style="min-width: 300px; max-width: 600px; width: 100%;">
+    <h3 class="text-center mb-4">Add Blog</h3>
+      <form action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}  
+          <table class="table">
+            <tbody>
+              {% for field in form%}
+              <tr>
+                <td><label for="{{ field.id_for_label }}">{{ field.label }}</label></td>
+                <td>{{ field }}</td>
+                <td>
+                  {% if field.errors %}
+                    <span class="error">{{ field.errors | striptags }}</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <button type="submit"  class="btn btn-primary w-100"> Add Blog </button>
+        </form>
+  </div>
+</div>
+
+{% endblock content%} 
