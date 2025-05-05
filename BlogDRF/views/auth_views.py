@@ -10,7 +10,7 @@ from Blog.utils import generate_password_reset_link, send_custom_email
 from BlogDRF.serializers import (PasswordResetConfirmSerializer,
                                  PasswordResetRequestSerializer,
                                  UserSerializer)
-    
+
 
 class PasswordResetRequestView(APIView):
     permission_classes = [permissions.AllowAny]

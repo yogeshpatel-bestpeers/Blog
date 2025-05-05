@@ -1,8 +1,10 @@
 import pytest
 from django.urls import reverse
 from rest_framework import status
+
 from Blog.models import Category
-from .conftest import category, admin_user
+
+from .conftest import admin_user, category
 
 
 @pytest.mark.django_db

@@ -1,9 +1,9 @@
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from BlogDRF.permissions import CategoryPermission
 
 from Blog.models import Category
+from BlogDRF.permissions import CategoryPermission
 from BlogDRF.serializers import CategorySerializer
 
 
