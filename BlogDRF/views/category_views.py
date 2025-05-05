@@ -16,7 +16,7 @@ class CategoryView(APIView):
     #     else:
     #         return [permissions.IsAdminUser]
 
-    def get(self, request): 
+    def get(self, request):
         blogs = Category.objects.all()
         serializer = CategorySerializer(blogs, many=True)
         return Response(serializer.data)

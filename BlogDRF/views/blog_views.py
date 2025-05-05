@@ -20,7 +20,7 @@ class BlogList(APIView):
         serializer = BlogSerializer(data=request.data)
         print(serializer.is_valid())
         if serializer.is_valid():
-            print(serializer.validated_data['category'])
+            print(serializer.validated_data["category"])
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -63,7 +63,7 @@ class BlogDetail(APIView):
             return Response(
                 {"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN
             )
-        blog.delete()   
+        blog.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

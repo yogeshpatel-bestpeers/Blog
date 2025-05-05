@@ -31,6 +31,9 @@ urlpatterns = [
     ),
     path("logout/", auth_views.LogoutView.as_view(), name="logout_user"),
     path("categories/", category_views.CategoryView.as_view(), name="category-view"),
-    path("categories/<uuid:pk>/", category_views.CategoryDelete.as_view(), name="category-delete"),
-
+    path(
+        "categories/<uuid:pk>/",
+        category_views.CategoryDelete.as_view(),
+        name="category-delete",
+    ),
 ]

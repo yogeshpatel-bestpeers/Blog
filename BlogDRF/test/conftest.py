@@ -15,14 +15,19 @@ def user():
     return CustomUser.objects.create_user(
         email="testuser@example.com", username="testuser", password="testpassword123"
     )
+
+
 @pytest.fixture
 def admin_user():
-    return CustomUser.objects.create_superuser(username="admin", password="admin123", email="admin@example.com")
+    return CustomUser.objects.create_superuser(
+        username="admin", password="admin123", email="admin@example.com"
+    )
 
 
 @pytest.fixture
 def category():
     return Category.objects.create(name="Tech")
+
 
 @pytest.fixture
 def blog(user, category):

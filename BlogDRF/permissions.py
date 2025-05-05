@@ -13,5 +13,3 @@ class CategoryPermission(BasePermission):
             return True
         else:
             return request.user.is_staff
-
-

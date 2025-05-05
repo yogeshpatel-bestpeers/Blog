@@ -7,9 +7,11 @@ from rest_framework.views import APIView
 
 from Blog.models import CustomUser
 from Blog.utils import generate_password_reset_link, send_custom_email
-from BlogDRF.serializers import (PasswordResetConfirmSerializer,
-                                 PasswordResetRequestSerializer,
-                                 UserSerializer)
+from BlogDRF.serializers import (
+    PasswordResetConfirmSerializer,
+    PasswordResetRequestSerializer,
+    UserSerializer,
+)
 
 
 class PasswordResetRequestView(APIView):

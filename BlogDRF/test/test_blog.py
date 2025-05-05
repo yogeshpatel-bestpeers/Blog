@@ -26,12 +26,12 @@ def test_create_blog(api_client, user, category):
         "user": str(user.id),
         "title": "New Blog",
         "content": "Blog content here.",
-        "category": category.id, 
+        "category": category.id,
     }
     print(data)
 
     # Ensure the format is JSON (not multipart)
-    response = api_client.post(url,data= data, format="json")
+    response = api_client.post(url, data=data, format="json")
 
     print(response.data)
 

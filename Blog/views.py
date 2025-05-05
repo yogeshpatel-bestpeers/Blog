@@ -9,8 +9,14 @@ from django.views.generic import TemplateView
 
 from .forms import BlogForm, CategoryForm, CommentForm, LoginForm, SignupForm
 from .models import Blog, Category, Comment, CustomUser, Like
-from .utils import (blog_page, category_url, generate_password_reset_link,
-                    home_url, login_url, userprofile_url)
+from .utils import (
+    blog_page,
+    category_url,
+    generate_password_reset_link,
+    home_url,
+    login_url,
+    userprofile_url,
+)
 
 
 class Custom_password_reset_request(TemplateView):

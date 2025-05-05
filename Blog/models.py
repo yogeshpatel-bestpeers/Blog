@@ -59,7 +59,7 @@ class Blog(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="blogs")
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    featured_image = models.ImageField(upload_to="blog_images",null=True,blank=True)
+    featured_image = models.ImageField(upload_to="blog_images", null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
 
     def __str__(self):
