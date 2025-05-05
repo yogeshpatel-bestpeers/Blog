@@ -10,6 +10,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+      EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v3
@@ -23,10 +26,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
-      - name: Load .env file
-        run: |
-          export $(cat .env | xargs)
 
       - name: Set DJANGO_SETTINGS_MODULE
         run: |
@@ -36,6 +35,6 @@ jobs:
         run: |
           python3 manage.py migrate
 
-      - name: Run tests
+      - name: Ru  n tests
         run: |  
           pytest
