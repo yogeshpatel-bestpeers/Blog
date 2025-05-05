@@ -28,6 +28,10 @@ jobs:
         run: |
           echo "DJANGO_SETTINGS_MODULE=Blogger.settings" >> $GITHUB_ENV
 
-      - name: Run tests
+      - name: Run migrations
         run: |
+          python3 manage.py migrate
+
+      - name: Run tests
+        run: |  
           pytest
