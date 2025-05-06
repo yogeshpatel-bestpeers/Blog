@@ -8,4 +8,5 @@ services:
     startCommand: gunicorn Blogger.wsgi:application --bind 0.0.0.0:8000
     preDeployCommand: |
       python manage.py collectstatic --noinput
+      python manage.py migrations
       python manage.py migrate  
