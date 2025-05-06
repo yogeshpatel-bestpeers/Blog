@@ -29,7 +29,6 @@ urlpatterns = [
         auth_views.PasswordResetConfirmView.as_view(),
         name="password-reset-confirm",
     ),
-    path("logout/", auth_views.LogoutView.as_view(), name="logout_user"),
     path("categories/", category_views.CategoryView.as_view(), name="category-view"),
     path(
         "categories/<uuid:pk>/",

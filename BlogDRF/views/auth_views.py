@@ -10,6 +10,9 @@ from Blog.utils import generate_password_reset_link, send_custom_email
 from BlogDRF.serializers import (PasswordResetConfirmSerializer,
                                  PasswordResetRequestSerializer,
                                  UserSerializer)
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+
+
 
 
 class PasswordResetRequestView(APIView):
@@ -75,7 +78,6 @@ class RegisterView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
 
@@ -88,29 +90,54 @@ class LoginView(APIView):
                 {"error": "Email and password are required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        user = authenticate(request, username=email, password=password)
 
-        user = authenticate(email=email, password=password)
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
 
-        if user:
-            login(request, user)
             return Response(
                 {
-                    "username": user.username,
+                    "access": access_token,  
+                    "refresh": str(refresh),  
                 },
                 status=status.HTTP_200_OK,
             )
         else:
             return Response(
-                {"error": "Invalid username or password"},
+                {"error": "Invalid email or password"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-
 
 class LogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
-        logout(request)
-        return Response(
-            {"message": "Logout Sucessfull"}, status=status.HTTP_202_ACCEPTED
-        )
+    def post(self, request):
+        try:
+            refresh_token = request.data.get("refresh")
+            if not refresh_token:
+                return Response(
+                    {"error": "Refresh token required"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(
+                {"detail": "Logout successful"},
+                status=status.HTTP_205_RESET_CONTENT
+            )
+
+        except TokenError as e:
+            return Response(
+                {"error": "Invalid or expired token"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        

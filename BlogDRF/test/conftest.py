@@ -5,6 +5,12 @@ from rest_framework.test import APIClient
 from Blog.models import Blog, Category, CustomUser
 
 
+
+@pytest.fixture(autouse=True)
+def media_root(tmp_path, settings):
+    settings.MEDIA_ROOT = tmp_path
+
+
 @pytest.fixture
 def api_client():
     return APIClient()
