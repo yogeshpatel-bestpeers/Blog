@@ -38,3 +38,4 @@ jobs:
       - name: Trigger Render Deployment
         run: |
           curl -fsSL https://api.render.com/deploy/srv-d0crreje5dus73amj0e0?key=sQzIcsUTmEA  # Trigger Render deployment (replace with your Render API key and app ID)
+  
