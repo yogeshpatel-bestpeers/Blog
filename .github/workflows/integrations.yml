@@ -28,6 +28,7 @@ jobs:
         run: |
           echo "DJANGO_SETTINGS_MODULE=Blogger.settings" >> $GITHUB_ENV
           echo "EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}" >> $GITHUB_ENV
+          echo "SECRET_KEY=${{secrets.SECRET_KEY}}" >> $GITHUB_ENV
           echo "EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Run migrations
