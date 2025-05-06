@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model,authenticate,login,logout
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
@@ -115,8 +115,9 @@ class UserLogin(TemplateView):
                 return render(request, self.template_name, {"form": form})
 
             if user.check_password(password):
-                request.session["user_id"] = str(user.id)
-                request.user = user
+                # request.session["user_id"] = str(user.id)
+                # request.user = user
+                login(request, user)
                 return redirect(home_url)
             else:
                 messages.error(request, "Email or password is incorrect.")
@@ -125,9 +126,9 @@ class UserLogin(TemplateView):
 
 class UserLogout(TemplateView):
     def get(self, request):
-        if "user_id" in request.session:
-            del request.session["user_id"]
-
+        # if "user_id" in request.session:
+        #     del request.session["user_id"]
+        logout(request)
         return redirect(home_url)
 
 
