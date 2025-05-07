@@ -2,7 +2,7 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from Blog.models import Blog, Like
+from Blog.models import Blog, Like,Comment
 from BlogDRF.permissions import IsNotAdminUser
 from BlogDRF.serializers import BlogSerializer, CommentSerializer
 
@@ -93,19 +93,36 @@ class BlogLike(APIView):
 class BlogComment(APIView):
     permission_classes = [IsNotAdminUser]
 
+    # def post(self, request, pk):
+    #     blog = Blog.objects.get(pk=pk)
+    #     if not blog:
+    #         return Response(
+    #             {"detail": "Blog not found."}, status=status.HTTP_404_NOT_FOUND
+    #         )
+
+    #     serializer = CommentSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save(user=request.user, blog=blog)
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def post(self, request, pk):
         blog = Blog.objects.get(pk=pk)
-        if not blog:
-            return Response(
-                {"detail": "Blog not found."}, status=status.HTTP_404_NOT_FOUND
-            )
 
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user, blog=blog)
+            parent_id = request.data.get("parent")
+            parent = None
+            if parent_id:
+                parent = Comment.objects.filter(id=parent_id).first()
+                if parent and parent.blog != blog:
+                    return Response(
+                        {"detail": "Reply must belong to the same blog."},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+            serializer.save(user=request.user, blog=blog, parent=parent)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class BlogApproved(APIView):
     permission_classes = [permissions.IsAdminUser]
