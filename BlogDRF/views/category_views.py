@@ -1,4 +1,5 @@
 from rest_framework import permissions, status
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -9,6 +10,7 @@ from BlogDRF.serializers import CategorySerializer
 
 class CategoryView(APIView):
     permission_classes = [CategoryPermission]
+    authentication_classes = [JWTAuthentication]
 
     # def get_permissions(self):
     #     if self.request.method == "GET":
@@ -32,6 +34,7 @@ class CategoryView(APIView):
 
 class CategoryDelete(APIView):
     permission_classes = [permissions.IsAdminUser]
+    authentication_classes = [JWTAuthentication]
 
     def delete(self, request, pk):
         try:

@@ -11,6 +11,7 @@ from BlogDRF.serializers import (PasswordResetConfirmSerializer,
                                  PasswordResetRequestSerializer,
                                  UserSerializer)
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 
 
 
@@ -122,14 +123,22 @@ class LogoutView(APIView):
                 )
 
             token = RefreshToken(refresh_token)
+
+            # Check if already blacklisted
+            if BlacklistedToken.objects.filter(token__jti=token['jti']).exists():
+                return Response(
+                    {"detail": "Token already blacklisted"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
             token.blacklist()
 
             return Response(
                 {"detail": "Logout successful"},
-                status=status.HTTP_205_RESET_CONTENT
+                status=status.HTTP_200_OK
             )
 
-        except TokenError as e:
+        except TokenError:
             return Response(
                 {"error": "Invalid or expired token"},
                 status=status.HTTP_400_BAD_REQUEST

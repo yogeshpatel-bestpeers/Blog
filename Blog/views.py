@@ -6,6 +6,7 @@ from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import urlsafe_base64_decode
 from django.views.generic import TemplateView
+from django.contrib.auth import authenticate, login, logout
 
 from .forms import BlogForm, CategoryForm, CommentForm, LoginForm, SignupForm
 from .models import Blog, Category, Comment, CustomUser, Like
@@ -115,8 +116,9 @@ class UserLogin(TemplateView):
                 return render(request, self.template_name, {"form": form})
 
             if user.check_password(password):
-                request.session["user_id"] = str(user.id)
-                request.user = user
+                # request.session["user_id"] = str(user.id)
+                # request.user = user
+                login(request,user)
                 return redirect(home_url)
             else:
                 messages.error(request, "Email or password is incorrect.")
@@ -125,8 +127,9 @@ class UserLogin(TemplateView):
 
 class UserLogout(TemplateView):
     def get(self, request):
-        if "user_id" in request.session:
-            del request.session["user_id"]
+        # if "user_id" in request.session:
+        #     del request.session["user_id"]
+        logout(request)
 
         return redirect(home_url)
 

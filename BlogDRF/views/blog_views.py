@@ -1,4 +1,5 @@
 from rest_framework import permissions, status
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -8,7 +9,15 @@ from BlogDRF.serializers import BlogSerializer, CommentSerializer
 
 
 class BlogList(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [permissions.IsAuthenticated()]
+        return []
+
+    def get_authenticators(self):
+        if self.request.method == 'POST':
+            return [JWTAuthentication()]
+        return []
 
     def get(self, request):
         blogs = Blog.objects.all()
@@ -27,7 +36,15 @@ class BlogList(APIView):
 
 
 class BlogDetail(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    def get_permissions(self):
+        if self.request.method in [ 'POST','PUT','DELETE']:
+            return [permissions.IsAuthenticated()]
+        return []
+
+    def get_authenticators(self):
+        if self.request.method in [ 'POST','PUT','DELETE']:
+            return [JWTAuthentication()]
+        return []
 
     def get_object(self, pk):
         try:
@@ -68,7 +85,15 @@ class BlogDetail(APIView):
 
 
 class BlogLike(APIView):
-    permission_classes = [IsNotAdminUser]
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [permissions.IsAuthenticated()]
+        return []
+
+    def get_authenticators(self):
+        if self.request.method == 'POST':
+            return [JWTAuthentication()]
+        return []
 
     def post(self, request, pk):
         blog = Blog.objects.get(pk=pk)
@@ -92,6 +117,7 @@ class BlogLike(APIView):
 
 class BlogComment(APIView):
     permission_classes = [IsNotAdminUser]
+    authentication_classes = [JWTAuthentication]
 
     def post(self, request, pk):
         blog = Blog.objects.get(pk=pk)
@@ -109,6 +135,7 @@ class BlogComment(APIView):
 
 class BlogApproved(APIView):
     permission_classes = [permissions.IsAdminUser]
+    authentication_classes = [JWTAuthentication]
 
     def get(self, request, pk):
         try:
@@ -133,6 +160,7 @@ class BlogApproved(APIView):
 
 class BlogRejected(APIView):
     permission_classes = [permissions.IsAdminUser]
+    authentication_classes = [JWTAuthentication]
 
     def get(self, request, pk):
         try:
