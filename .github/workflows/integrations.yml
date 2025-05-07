@@ -38,7 +38,7 @@ jobs:
       
       - name: Load initial data
         run: |
-          python manage.py loaddata initial_data.json
+          python manage.py --ignore=contenttypes loaddata initial_data.json
 
       - name: Tests
         run: |
