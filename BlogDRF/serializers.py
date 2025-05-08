@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+import re
 from Blog.models import Blog, Category, Comment, CustomUser, Like
 
 
@@ -64,6 +64,14 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
     uidb64 = serializers.CharField()
     token = serializers.CharField()
     password = serializers.CharField(write_only=True, min_length=6)
+
+    def validate_password(self,value):
+    
+        if not re.search(r"^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$", value):
+            raise serializers.ValidationError(
+                "Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character (e.g., !@#$%^&*)."
+            )
+        return value
 
 
 class PasswordResetRequestSerializer(serializers.Serializer):
