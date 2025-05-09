@@ -16,11 +16,8 @@ class BlogList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        print(request.data)
         serializer = BlogSerializer(data=request.data)
-        print(serializer.is_valid())
         if serializer.is_valid():
-            print(serializer.validated_data['category'])
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -37,7 +34,6 @@ class BlogDetail(APIView):
 
     def get(self, request, pk):
         blog = self.get_object(pk)
-        print()
         if blog is None:
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
         serializer = BlogSerializer(blog)
