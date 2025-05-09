@@ -9,7 +9,7 @@ from .models import Blog, Category, Comment, CustomUser
 class SignupForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ["first_name", "last_name", "email", "password"]
+        fields = ["username","first_name", "last_name", "email", "password"]
         widgets = {"password": forms.PasswordInput(render_value=True)}
 
     def clean_password(self):

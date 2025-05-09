@@ -120,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'BlogDRF.backends.EmailAuthBackend',
+    'BlogDRF.utils.EmailAuthBackend',
     # 'django.contrib.auth.backends.ModelBackend',
 ] 
 
