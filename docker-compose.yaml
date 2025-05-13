@@ -1,7 +1,25 @@
 version: '2.2'
 
-services: 
-  web:    
-    image: blogger:latest   
-    ports:     
-      - "8000:8000" 
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: Blog
+      MYSQL_USER: blog_user
+      MYSQL_PASSWORD: developer
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes" 
+    ports:
+      - "3306:3306"  
+    healthcheck:  
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      retries: 5
+      timeout: 20s
+
+  web:
+    depends_on:
+      db:
+        condition: service_healthy
+    image: blogger:1.2
+    ports:
+      - "8000:8000"
