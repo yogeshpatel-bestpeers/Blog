@@ -3,9 +3,13 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode
+from django.core.mail import send_mail
+from django.conf import settings
+from celery import shared_task
 
-
+@shared_task
 def send_custom_email(subject, message, recipient_email):
+    print("This is a task from utils.py")
     send_mail(
         subject=subject,
         message=message,
@@ -13,6 +17,7 @@ def send_custom_email(subject, message, recipient_email):
         recipient_list=[recipient_email],
         fail_silently=False,
     )
+
 
 
 def generate_password_reset_link(user, request):

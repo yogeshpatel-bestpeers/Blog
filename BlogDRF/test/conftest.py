@@ -9,6 +9,9 @@ from Blog.models import Blog, Category, CustomUser
 def api_client():
     return APIClient()
 
+@pytest.fixture(autouse=True)
+def media_root(tmp_path, settings):
+    settings.MEDIA_ROOT = tmp_path
 
 @pytest.fixture
 def user():

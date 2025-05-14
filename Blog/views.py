@@ -10,7 +10,7 @@ from django.views.generic import TemplateView
 from .forms import BlogForm, CategoryForm, CommentForm, LoginForm, SignupForm
 from .models import Blog, Category, Comment, CustomUser, Like
 from .utils import (blog_page, category_url, generate_password_reset_link,
-                    home_url, login_url, userprofile_url)
+                    home_url, login_url, userprofile_url,send_custom_email)
 
 
 class Custom_password_reset_request(TemplateView):
@@ -23,13 +23,18 @@ class Custom_password_reset_request(TemplateView):
         try:
             user = User.objects.get(email=email)
             reset_link = generate_password_reset_link(user, request)
-            send_mail(
+            send_custom_email.delay(
                 subject="Reset Your Password",
                 message=f"Click the link to reset your password: {reset_link}",
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[email],
-                fail_silently=False,
+                recipient_email=email,
             )
+            # send_mail(
+            #     subject="Reset Your Password",
+            #     message=f"Click the link to reset your password: {reset_link}",
+            #     from_email=settings.EMAIL_HOST_USER,
+            #     recipient_list=[email],
+            #     fail_silently=False,
+            # )
             messages.success(request, "Password Reset    link Send..")
             return render(request, self.template_name)
         except User.DoesNotExist:

@@ -36,6 +36,13 @@ DEBUG = True
 ALLOWED_HOSTS = ['blog-001k.onrender.com', 'localhost', '127.0.0.1']
 
 
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+# set the celery result backend
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# set the celery timezone
+CELERY_TIMEZONE = 'UTC'
 
 # Application definition
 
@@ -46,6 +53,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "celery",
     "rest_framework",
     "Blog",
     "BlogDRF",
@@ -106,10 +114,10 @@ DATABASES = {
         'NAME': config('DB_NAME'),  
         'USER': config('DB_USER'),  
         'PASSWORD': config('DB_PASSWORD'), 
-        # 'HOST': '127.0.0.1', 
+        # 'HOST': 'localhost', 
         'HOST':'db',
         'PORT': '3306',  
-    }
+    }   
 }
 
 

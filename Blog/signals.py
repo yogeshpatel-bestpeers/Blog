@@ -5,12 +5,12 @@ from django.utils.timezone import now
 from .models import Comment, CustomUser, Notification
 from .utils import send_custom_email
 
-
 @receiver(post_save, sender=CustomUser)
 def create_profile(sender, instance, created, **kwargs):
     if created:
         if created:
-            send_custom_email(
+            print('singal created')
+            send_custom_email.delay(
                 subject="Welcome to the Blogger!",
                 message="Your account has been created successfully.",
                 recipient_email=instance.email,
