@@ -1,6 +1,15 @@
 version: '2.2'
 
 services:
+  redis:
+    image: redis:7.2
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   db:
     image: mysql:8.0
     environment:
@@ -18,13 +27,23 @@ services:
       retries: 5
       timeout: 20s
 
+  celery:
+    image: blogger:1.1
+    command: celery -A Blogger worker --loglevel=info
+    depends_on:
+      - db
+      - redis
+
   web:
     depends_on:
       db:
         condition: service_healthy
-    image: blogger:1.2
+      redis:
+        condition: service_healthy
+
+    image: blogger:1.1
     volumes:
-        - ./Blogger:/app
+        - ./Blogger:/app  
         - ./media/blog_images:/app/media
     ports:
       - "8000:8000"

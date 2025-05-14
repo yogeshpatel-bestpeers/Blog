@@ -36,10 +36,10 @@ DEBUG = True
 ALLOWED_HOSTS = ['blog-001k.onrender.com', 'localhost', '127.0.0.1']
 
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
 
 # set the celery result backend
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
 # set the celery timezone
 CELERY_TIMEZONE = 'UTC'
