@@ -4,12 +4,14 @@ services:
   db:
     image: mysql:8.0
     environment:
-      MYSQL_DATABASE: Blog
-      MYSQL_USER: blog_user
-      MYSQL_PASSWORD: developer
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes" 
     ports:
-      - "3306:3306"  
+      - "3307:3306" 
+    volumes:
+      - mysql_data:/var/lib/mysql 
     healthcheck:  
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 30s
@@ -21,5 +23,10 @@ services:
       db:
         condition: service_healthy
     image: blogger:1.2
+    volumes:
+        - ./Blogger:/app
+        - ./media/blog_images:/app/media
     ports:
       - "8000:8000"
+volumes:
+    mysql_data:

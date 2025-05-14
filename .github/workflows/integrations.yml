@@ -31,10 +31,10 @@ jobs:
           echo "SECRET_KEY=${{secrets.SECRET_KEY}}" >> $GITHUB_ENV
           echo "EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}" >> $GITHUB_ENV
 
-      - name: Run migrations
-        run: |
-          python manage.py makemigrations
-          python manage.py migrate
+      # - name: Run migrations
+      #   run: |
+      #     python manage.py makemigrations
+      #     python manage.py migrate
       
       # - name: Load initial data
       #   run: |
