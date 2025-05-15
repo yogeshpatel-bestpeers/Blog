@@ -28,7 +28,7 @@ services:
       timeout: 20s
 
   celery:
-    image: blogger:1.1
+    image: blogger:1.3
     command: celery -A Blogger worker --loglevel=info
     depends_on:
       - db
@@ -41,11 +41,13 @@ services:
       redis:
         condition: service_healthy
 
-    image: blogger:1.1
+    image: blogger:1.3
+    environment:
+      DB_HOST: db
     volumes:
         - ./Blogger:/app  
         - ./media/blog_images:/app/media
     ports:
       - "8000:8000"
-volumes:
+volumes:  
     mysql_data:
